@@ -1,0 +1,58 @@
+﻿@model IEnumerable<PuntoDeVenta.Data.CLIENTES>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/Layout.cshtml";
+}
+
+<h4>Clientes</h4>
+<hr />
+
+<p>
+    @Html.ActionLink("Crear Nuevo", "Create", null, new { @class = "btn btn-primary btn-large" })
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.NOMBRE)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.A_PATERNO)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.A_MATERNO)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EDAD)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NUM_TELEFONO)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.NOMBRE)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.A_PATERNO)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.A_MATERNO)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EDAD)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.NUM_TELEFONO)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.ID }, new { @class = "btn btn-outline-secondary btn-sm" }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.ID }, new { @class = "btn btn-outline-danger btn-sm" })
+        </td>
+    </tr>
+}
+
+</table>

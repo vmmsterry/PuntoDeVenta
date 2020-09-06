@@ -1,0 +1,63 @@
+﻿@model PuntoDeVenta.Data.CLIENTES
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/Layout.cshtml";
+}
+
+<h3>¿Estás seguro de querer borrar este cliente?</h3>
+<div>
+    <h4>Clientes</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.NOMBRE)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NOMBRE)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.A_PATERNO)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.A_PATERNO)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.A_MATERNO)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.A_MATERNO)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EDAD)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EDAD)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NUM_TELEFONO)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NUM_TELEFONO)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-danger btn-large" /> |
+            @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-secondary btn-sm" })
+        </div>
+    }
+</div>

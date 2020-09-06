@@ -1,0 +1,172 @@
+﻿@model IEnumerable<PuntoDeVenta.Data.CLIENTES>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/Layout.cshtml";
+}
+
+<h2>Ventas</h2>
+<hr />
+
+@using (Html.BeginForm())
+{
+<div class="form-horizontal">
+    <div class="row">
+        <div class="col-4">
+            <div class="form-group">
+                <label>Cliente</label>
+                <select class="form-control" id="idCliente">
+
+                    @foreach (var item in Model)
+                    {
+                        <option value="@Html.DisplayFor(modelItem => item.ID)">@Html.DisplayFor(modelItem => item.NOMBRE) @Html.DisplayFor(modelItem => item.A_PATERNO)</option>
+
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Buscar artículo</label>
+                <input type="text" class="form-control" id="idBUscar" />
+            </div>
+            <div class=" form-group text-right">
+                <input type="button" id="idBtnBuscar" class="btn btn-secondary btn-sm pull-right" value="Buscar" data-toggle="modal" data-target="#modalBuscar"/>
+            </div>
+            <div class="border" style="padding:5px;">
+                <div class="row">
+                    <div class="form-group col-3 text-right">
+                        <label class="font-weight-bold" style="font-size:23px;">Total</label>
+                    </div>
+                    <div class="form-group col-9">
+                        <input type="text" class="form-control text-right" disabled id="idTotal" value="0" />
+                    </div>
+                </div>
+                <div class="form-group text-right">
+                    <select id="tipoPago" class="form-control">
+                        <option value="Efectivo">Efectivo</option>
+                        <option value="Tarjeta">Tarjeta</option>
+                        <option value="Credito">Credito</option>
+                    </select>
+                </div>
+                <div class=" form-group text-right">
+                    <input type="button" id="idBtnPagar" class="btn btn-primary btn-lg pull-right" value="Pagar" />
+                </div>
+            </div>
+        </div>
+        <div class="col-8">
+            <table class="table table-striped" id="tabla" style="height:100px;">
+                <thead>
+                    <tr>
+                        <th scope="col">Código</th>
+                        <th scope="col">Descripción</th>
+                        @*<th scope="col">Existencia</th>*@
+                        <th scope="col">Precio</th>
+                    </tr>
+                </thead>
+                <tbody id="tBodyVenta"></tbody>
+            </table>
+        </div>
+      
+    </div>
+
+
+    <div id="modalBuscar" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Buscar artículo</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="idArticulos">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Código</th>
+                                    <th scope="col">Descripción</th>
+                                    @*<th scope="col">Existencia</th>*@
+                                    <th scope="col">Precio</th>
+                                    <th scope="col"></th>
+                                </tr>
+                            </thead>
+                            <tbody id="tBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+}
+
+
+<script type="text/javascript">
+    function AgregaArticulo() {
+        var cadena = $("#idBUscar").val();
+        var htmlTable = "";
+        $.get("/Ventas/BuscaArticulos", { 'cadena': cadena }, function (data) {
+            $.each(data.lt, function (i, item) {
+                htmlTable += '<tr><td>' + item.CODIGO + '</td>'
+                    + '<td>' + item.DESCRIPCION + '</td>'
+                    //+ '<td>' + item.EXISTENCIA + '</td>'
+                    + '<td>' + item.PRECIO + '</td></tr>';
+
+                var totalActum = parseFloat($("#idTotal").val());
+                $("#idTotal").val(totalActum + item.PRECIO);
+            });
+            $("#tBodyVenta").append(htmlTable);
+
+            $("#tBody").html('');
+        });
+    }
+
+    $(document).ready(function () {
+
+        $("#idBtnBuscar").click(function () {
+            var cadena = $("#idBUscar").val();
+            var htmlTable = "";
+            $.get("/Ventas/BuscaArticulos", { 'cadena': cadena }, function (data) {
+                $.each(data.lt, function (i, item) {
+                    htmlTable += '<tr><td id="tdValor">' + item.CODIGO + '</td>'
+                        + '<td>' + item.DESCRIPCION + '</td>'
+                        //+ '<td>' + item.EXISTENCIA + '</td>'
+                        + '<td>' + item.PRECIO + '</td>'
+                        + '<td><button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal" onclick="AgregaArticulo()">Agregar</button></td></tr>';
+                });
+                $("#tBody").html(htmlTable);
+            });
+
+
+        });
+
+        $("#idBtnPagar").click(function () {
+            var total = $("#idTotal").val();
+            var tipoPago = $("#tipoPago option:selected").text();
+            var idCliente = $("#idCliente option:selected").val();
+             var rows = [];
+            $('#tBodyVenta tr').each(function () {
+                var codigo = $(this).find('td').eq(0).text().trim();
+                var descripcion = $(this).find('td').eq(1).text().trim();
+                var precio = $(this).find('td').eq(2).text().trim();
+                var row = codigo + "-" + descripcion + "-" + precio;
+                rows.push(row);
+            });
+
+
+            $.post('@Url.Action("GuardaVenta", "Ventas")', { rows: rows, total: total, tipoPago: tipoPago, idCliente: idCliente }, function (data) {
+                //console.log(data);
+            }).done(function (data) {
+                alert("second success");
+                $("#tBodyVenta").append('');
+            }).fail(function (data) {
+                alert(data.msj);
+            });
+
+        });
+
+
+    });
+</script>

@@ -1,0 +1,215 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="PuntoDeVentaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ARTICULOS">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CODIGO" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="DESCRIPCION" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="EXISTENCIA" Type="int" Nullable="false" />
+          <Property Name="PRECIO" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ARTICULOS_VENTA">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID_ARTICULO" Type="int" Nullable="false" />
+          <Property Name="ID_VENTA" Type="int" Nullable="false" />
+          <Property Name="MONTO_ARTICULO" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="ID_VENTA1" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CLIENTES">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NOMBRE" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="A_PATERNO" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="A_MATERNO" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="EDAD" Type="int" Nullable="false" />
+          <Property Name="NUM_TELEFONO" Type="varchar" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="VENTAS">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID_CLIENTE" Type="int" Nullable="false" />
+          <Property Name="FECHA" Type="datetime" Nullable="false" />
+          <Property Name="TIPO_PAGO" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="MONTO" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_VENTAS_VENTAS">
+          <End Role="VENTAS" Type="Self.VENTAS" Multiplicity="1" />
+          <End Role="VENTAS1" Type="Self.VENTAS" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="VENTAS">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="VENTAS1">
+              <PropertyRef Name="ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PuntoDeVentaModelStoreContainer">
+          <EntitySet Name="ARTICULOS" EntityType="Self.ARTICULOS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ARTICULOS_VENTA" EntityType="Self.ARTICULOS_VENTA" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CLIENTES" EntityType="Self.CLIENTES" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="VENTAS" EntityType="Self.VENTAS" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_VENTAS_VENTAS" Association="Self.FK_VENTAS_VENTAS">
+            <End Role="VENTAS" EntitySet="VENTAS" />
+            <End Role="VENTAS1" EntitySet="VENTAS" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="PuntoDeVentaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="ARTICULOS">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CODIGO" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DESCRIPCION" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="EXISTENCIA" Type="Int32" Nullable="false" />
+          <Property Name="PRECIO" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ARTICULOS_VENTA">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID_ARTICULO" Type="Int32" Nullable="false" />
+          <Property Name="ID_VENTA" Type="Int32" Nullable="false" />
+          <Property Name="MONTO_ARTICULO" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="ID_VENTA1" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CLIENTES">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NOMBRE" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="A_PATERNO" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="A_MATERNO" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="EDAD" Type="Int32" Nullable="false" />
+          <Property Name="NUM_TELEFONO" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="VENTAS">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID_CLIENTE" Type="Int32" Nullable="false" />
+          <Property Name="FECHA" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TIPO_PAGO" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="MONTO" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <NavigationProperty Name="VENTAS1" Relationship="Self.FK_VENTAS_VENTAS" FromRole="VENTAS" ToRole="VENTAS1" />
+          <NavigationProperty Name="VENTAS2" Relationship="Self.FK_VENTAS_VENTAS" FromRole="VENTAS1" ToRole="VENTAS" />
+        </EntityType>
+        <Association Name="FK_VENTAS_VENTAS">
+          <End Role="VENTAS" Type="Self.VENTAS" Multiplicity="1" />
+          <End Role="VENTAS1" Type="Self.VENTAS" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="VENTAS">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="VENTAS1">
+              <PropertyRef Name="ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PuntoDeVentaEntities2" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="ARTICULOS" EntityType="Self.ARTICULOS" />
+          <EntitySet Name="ARTICULOS_VENTA" EntityType="Self.ARTICULOS_VENTA" />
+          <EntitySet Name="CLIENTES" EntityType="Self.CLIENTES" />
+          <EntitySet Name="VENTAS" EntityType="Self.VENTAS" />
+          <AssociationSet Name="FK_VENTAS_VENTAS" Association="Self.FK_VENTAS_VENTAS">
+            <End Role="VENTAS" EntitySet="VENTAS" />
+            <End Role="VENTAS1" EntitySet="VENTAS" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="PuntoDeVentaModelStoreContainer" CdmEntityContainer="PuntoDeVentaEntities2">
+          <EntitySetMapping Name="ARTICULOS">
+            <EntityTypeMapping TypeName="PuntoDeVentaModel.ARTICULOS">
+              <MappingFragment StoreEntitySet="ARTICULOS">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="CODIGO" ColumnName="CODIGO" />
+                <ScalarProperty Name="DESCRIPCION" ColumnName="DESCRIPCION" />
+                <ScalarProperty Name="EXISTENCIA" ColumnName="EXISTENCIA" />
+                <ScalarProperty Name="PRECIO" ColumnName="PRECIO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ARTICULOS_VENTA">
+            <EntityTypeMapping TypeName="PuntoDeVentaModel.ARTICULOS_VENTA">
+              <MappingFragment StoreEntitySet="ARTICULOS_VENTA">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="ID_ARTICULO" ColumnName="ID_ARTICULO" />
+                <ScalarProperty Name="ID_VENTA" ColumnName="ID_VENTA" />
+                <ScalarProperty Name="MONTO_ARTICULO" ColumnName="MONTO_ARTICULO" />
+                <ScalarProperty Name="ID_VENTA1" ColumnName="ID_VENTA1" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CLIENTES">
+            <EntityTypeMapping TypeName="PuntoDeVentaModel.CLIENTES">
+              <MappingFragment StoreEntitySet="CLIENTES">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="NOMBRE" ColumnName="NOMBRE" />
+                <ScalarProperty Name="A_PATERNO" ColumnName="A_PATERNO" />
+                <ScalarProperty Name="A_MATERNO" ColumnName="A_MATERNO" />
+                <ScalarProperty Name="EDAD" ColumnName="EDAD" />
+                <ScalarProperty Name="NUM_TELEFONO" ColumnName="NUM_TELEFONO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VENTAS">
+            <EntityTypeMapping TypeName="PuntoDeVentaModel.VENTAS">
+              <MappingFragment StoreEntitySet="VENTAS">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="ID_CLIENTE" ColumnName="ID_CLIENTE" />
+                <ScalarProperty Name="FECHA" ColumnName="FECHA" />
+                <ScalarProperty Name="TIPO_PAGO" ColumnName="TIPO_PAGO" />
+                <ScalarProperty Name="MONTO" ColumnName="MONTO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
